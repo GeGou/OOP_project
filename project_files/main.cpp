@@ -12,14 +12,20 @@ int main (int argc, char* argv[]) {
         
         srand(time(NULL));      // the start of the generator
 
+        // construct the parts of the simulation
         Segment* seg_ar[nsegs];
         for (int i = 0 ; i < nsegs ; i++) {
             seg_ar[i] = new Segment(i);
         }
-        // Attiki_odos my_odos(nsegs, k, percent);
+
         // simulation starts here
         for (int i = 0 ; i < n ; i++) {
-            int rand_pos = rand() % n;       //
+            // int rand_pos = rand() % n;       //
+            for (int i = nsegs-1 ; i >= 0 ; i--) {
+            
+            
+            
+            }
         }
         cout << "\n--------------------" << endl;
     }

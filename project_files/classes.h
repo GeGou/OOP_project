@@ -14,7 +14,7 @@ public:
     void operate();
 };
 
-class Segment : public Attiki_odos {
+class Segment {
 private:
     int index;
     Entry *entry;
@@ -39,11 +39,13 @@ private:
     int tolls;      // tolls with employees
     int e_tolls;    // electronic tolls
 public:
-    Entry(/* args */);
+    Entry(int);
     ~Entry();
+
+    void operate();
 };
 
-class Toll : public Entry {
+class Toll {
 private:
     int waiting_cars;
 public:
@@ -56,11 +58,13 @@ public:
 
 class Car {
 private:
-    Entry *output_node;
-    // Segment *segment;       // -1 while waiting to enter
-    int segment;
+    int exit_node;
+    int segment;        // -1 while waiting to enter
     bool is_ready;      // false at start
 public:
-    Car(/* args */);
+    Car(int, int);
     ~Car();
+
+    void seg(int);
+    void ready();
 };
