@@ -4,10 +4,15 @@
 using namespace std;
 
 ////////////////////////////////////////////
-Segment::Segment(int index) {
-    cout << "Segment construction. Give capacity in cars." << endl;
+Segment::Segment(int index, int k, int percent) : entry(index, k) {
+    cout << "Segment construction." << endl;
+    cout << "Segment_" << index <<" - Give capacity in cars: ";
     cin >> this->capacity;      // user gives the capacity
+    cout << "--------------------" << endl; 
     this->index = index;
+    if (index == 0) {
+        this->prev_segment = NULL;
+    }
     vector<Car> cars;
     for (int i = 1; i <= 5; i++) {
         // Car new_car;

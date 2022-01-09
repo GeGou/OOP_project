@@ -1,15 +1,20 @@
 // header file
+#include <vector>
 using namespace std;
 
 /////////////////////////////////
+class Segment;
 class Entry;
+class Toll;
+class Car;
 
 class Attiki_odos {
 private:
     int nsegs;
     int all_cars;
+    Segment** segments;
 public:
-    Attiki_odos(/* args */);
+    Attiki_odos(int, int, int);
     ~Attiki_odos();
     void operate();
 };
@@ -17,13 +22,13 @@ public:
 class Segment {
 private:
     int index;
-    Entry *entry;
+    Entry entry;
     int segment_cars;
     int capacity;
     Segment *next_segment;
     Segment *prev_segment;
 public:
-    Segment(int);
+    Segment(int, int, int);
     ~Segment();
     
     void enter();
@@ -36,10 +41,10 @@ public:
 class Entry {
 private:
     string id;      // entry name-id
-    int tolls;      // tolls with employees
-    int e_tolls;    // electronic tolls
+    vector<Toll> tolls;      // tolls with employees
+    vector<Toll> e_tolls;    // electronic tolls
 public:
-    Entry(int);
+    Entry(int, int);
     ~Entry();
 
     void operate();
@@ -47,9 +52,10 @@ public:
 
 class Toll {
 private:
-    int waiting_cars;
+    // int waiting_cars;
+    vector<Car> cars;
 public:
-    Toll(/* args */);
+    Toll(int, int);
     ~Toll();
 
     void remove_cars();
@@ -62,7 +68,7 @@ private:
     int segment;        // -1 while waiting to enter
     bool is_ready;      // false at start
 public:
-    Car(int, int);
+    Car(int, int);      // seg, nsegs
     ~Car();
 
     void seg(int);
