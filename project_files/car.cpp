@@ -3,9 +3,10 @@
 using namespace std;
 
 ////////////////////////////////////////////
-Car::Car(int cur_seg, int nsegs) {
-    cout << "Car construction." << endl;
-    this->exit_node = rand() % nsegs + cur_seg;       // isws 8elei cur_Seg+1
+Car::Car(int nsegs, int cur_seg) {
+    // cout << "Car construction." << endl;
+    this->exit_node = rand() % (nsegs - cur_seg) + (cur_seg + 1);       // rand() % 30 + 1985; -> v3 range 1985-2014
+    // cout << "exit node: " << exit_node << endl;
     this->segment = -1;
     this->is_ready = false;
 }
