@@ -27,22 +27,48 @@ Segment::~Segment() {
 
 }
 
-void Segment::enter() {
+bool Segment::enter(Car& car) {
     if (this->prev_segment == NULL) {
         // ENTOLES
     }
-    this->entrance.operate();   // epiostrefei synolo oxhmatwn
+    // this->entrance.operate();   // epiostrefei synolo oxhmatwn
+    if (get_no_of_vehicles() < this->capacity) {
+        this->segment_cars.push_back(&car);
+        return true;
+    }
+    return false;
 }
 
 void Segment::exit() {
-    if (this->next_segment == NULL) {
-        // ENTOLES
-    }
-    this->entrance.operate();
+
+    vector<Car*>::iterator i;
+    int y = 0;
+    for (i = segment_cars.begin(); i != segment_cars.end(); i++, y++) {
+        this->segment_cars;
+        if (this->next_segment == NULL) {
+            cout << "Erase all cars, road is finished" << endl;
+            segment_cars.erase(i);
+        }
+        else if (segment_cars[y]->exit_node == this->cur_seg) {
+            segment_cars.erase(i);
+            cout << "Erase car" << endl;
+        }
+     }
+    // this->entrance.operate();
 }
 
-void Segment::pass() {
-
+vector<Car*> Segment::pass() {
+    // passing cars in the next segment
+    vector<Car*> passing_cars;
+    vector<Car*>::iterator i;
+    int y = 0;
+    for (i = segment_cars.begin(); i != segment_cars.end(); i++, y++) {
+        if (segment_cars[y]->exit_node > this->cur_seg) {
+            passing_cars.push_back(segment_cars[y]);
+            segment_cars.erase(i);
+        }
+    }
+    return passing_cars;
 }
 
 int Segment::get_no_of_vehicles() {
@@ -50,5 +76,5 @@ int Segment::get_no_of_vehicles() {
 }
 
 void Segment::operate() {
-
+    this->exit();
 }

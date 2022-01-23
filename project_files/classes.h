@@ -5,15 +5,17 @@ using namespace std;
 /////////////////////////////////
 class Car {
 private:
-    int exit_node;
+    // int exit_node;
     int segment;        // -1 while waiting to enter
-    bool is_ready;      // false at start
+    bool ready;      // false at start
 public:
     Car(int, int);      // seg, nsegs
     ~Car();
+    int exit_node;
 
     void seg(int);
-    void ready();
+    // void ready();
+    bool is_ready();
     void operate();
 };
 
@@ -54,9 +56,9 @@ public:
     Segment(int, int, int, int);
     ~Segment();
     
-    void enter();
+    bool enter(Car&);   // isws 8elei *car 
     void exit();
-    void pass();
+    vector<Car*> pass();
     int get_no_of_vehicles();
     void operate(); 
 };
