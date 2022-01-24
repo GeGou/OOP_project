@@ -76,5 +76,8 @@ int Segment::get_no_of_vehicles() {
 }
 
 void Segment::operate() {
+    int cars = get_no_of_vehicles() / 2;    // f.e. 50/2 -> 25
+    int temp = rand() % cars;       // f.e. if cars=25 -> 0-24  will be ready
+    
     this->exit();
 }

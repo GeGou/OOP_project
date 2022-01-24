@@ -24,9 +24,10 @@ Attiki_odos::~Attiki_odos() {
 
 void Attiki_odos::operate() {
     cout << "Total cars: " << this->all_cars << endl;
+    int sum = 0;
     for (int i = this->nsegs-1 ; i >= 0 ; i--) {        
-        this->segments[i]->operate(); 
-        this->segments[i]->get_no_of_vehicles();
+        this->segments[i]->operate();       // changes the amount of segment's cars
+        sum += this->segments[i]->get_no_of_vehicles();
     }
-    
+    cout << "Round : " << ++round << " -> summary of cars : " << sum << endl;
 }

@@ -3,6 +3,8 @@
 using namespace std;
 
 /////////////////////////////////
+static int round = 0;
+
 class Car {
 private:
     // int exit_node;
@@ -56,10 +58,10 @@ public:
     Segment(int, int, int, int);
     ~Segment();
     
-    bool enter(Car&);   // isws 8elei *car 
-    void exit();
-    vector<Car*> pass();
-    int get_no_of_vehicles();
+    bool enter(Car&);   // return true/false if a car moved to new seg or not
+    void exit();    // deleting cars from the vector segment_cars
+    vector<Car*> pass();    // returning a vector with cars that changes segment
+    int get_no_of_vehicles();   
     void operate(); 
 };
 
