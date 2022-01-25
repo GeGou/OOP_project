@@ -15,13 +15,17 @@ Car::~Car() {
     cout << "Car destruction." << endl;
 }
 
-void Car::seg(int seg) {
+int Car::get_exitnode() {
+    return this->exit_node;
+}
+
+void Car::set_segment(int seg) {
     this->segment = seg;
 }
 
-// void Car::ready() {
-//     // this->is_ready = true;
-// }
+void Car::set_ready() {
+    this->ready = true;
+}
 
 bool Car::is_ready() {
     return this->ready;

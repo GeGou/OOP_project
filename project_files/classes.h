@@ -7,43 +7,41 @@ static int round = 0;
 
 class Car {
 private:
-    // int exit_node;
+    int exit_node;      // random exit
     int segment;        // -1 while waiting to enter
     bool ready;      // false at start
 public:
     Car(int, int);      // seg, nsegs
     ~Car();
-    int exit_node;
 
-    void seg(int);
-    // void ready();
+    int get_exitnode();
+    void set_segment(int);
+    void set_ready();
     bool is_ready();
-    void operate();
 };
 
 class Toll {
 private:
-    // int waiting_cars;
-    int k;
-    vector<Car*> cars;
+    vector<Car*> waiting_cars;      // 30 cars waiting in every toll
 public:
-    Toll(int, int, int);
+    Toll(int, int);
     ~Toll();
 
-    void add_cars(int);
-    void remove_cars(int);
+    void add_cars(int, int);        // (int seg, int nsegs) / refill waiting cars vector
+    Car* remove_car();
 };
 
 class Entrance {
 private:
-    string id;      // entrance name-id
-    vector<Toll*> tolls;      // tolls with employees
-    vector<Toll*> e_tolls;    // electronic tolls
+    int nsegs, cur_seg, k;
+    string id;      // node name-id -> f.e Node_0 / Node_1
+    vector<Toll*> tolls;      // 3 tolls with employees
+    vector<Toll*> e_tolls;    // 5 electronic tolls
 public:
     Entrance(int, int, int);
     ~Entrance();
 
-    void operate();
+    vector<Car*> operate(int);      // int requested_cars -> cars from tolls to segment
 };
 
 class Segment {

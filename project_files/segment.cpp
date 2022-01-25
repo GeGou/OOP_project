@@ -49,7 +49,7 @@ void Segment::exit() {
             cout << "Erase all cars, road is finished" << endl;
             segment_cars.erase(i);
         }
-        else if (segment_cars[y]->exit_node == this->cur_seg) {
+        else if (segment_cars[y]->get_exitnode() == this->cur_seg) {
             segment_cars.erase(i);
             cout << "Erase car" << endl;
         }
@@ -63,7 +63,7 @@ vector<Car*> Segment::pass() {
     vector<Car*>::iterator i;
     int y = 0;
     for (i = segment_cars.begin(); i != segment_cars.end(); i++, y++) {
-        if (segment_cars[y]->exit_node > this->cur_seg) {
+        if (segment_cars[y]->get_exitnode() > this->cur_seg) {
             passing_cars.push_back(segment_cars[y]);
             segment_cars.erase(i);
         }
@@ -80,4 +80,9 @@ void Segment::operate() {
     int temp = rand() % cars;       // f.e. if cars=25 -> 0-24  will be ready
     
     this->exit();
+
+    //
+    cout << "Delays at the node entrance : " << this->cur_seg << endl;
+    cout << "Delays after the node : " << this->cur_seg << endl;
+    cout << "Keep safety distances at the segment after the node : " << this->cur_seg << endl;
 }

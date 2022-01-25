@@ -7,14 +7,12 @@ int main (int argc, char* argv[]) {
         int n = atoi(argv[1]);       // number of simulation cycles
         int nsegs = atoi(argv[2]);       // number of road's sections
         int k = atoi(argv[3]);       // maximum amount of inserted cars
-        if ((k == 0) || (nsegs == 0)) {
-            cout << "Some arguments must be more than 0." << endl;
+        int percent = atoi(argv[4]);        // cars percent
+        if ((n == 0) || (nsegs == 0) || (k == 0) || (percent == 0)) {
+            cout << "Arguments take values greater than 0." << endl;
             return 0;
         }
-        int percent = atoi(argv[4]);        // cars percent
-        
         srand(time(NULL));      // the start of the generator
-
         // simulation starts here
         Attiki_odos attiki_odos(nsegs, k, percent);
         for (int i = 0 ; i < n ; i++) {
