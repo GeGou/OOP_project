@@ -5,14 +5,14 @@ using namespace std;
 /////////////////////////////////
 static int round = 0;
 
-class Car {
+class Vehicle {
 private:
     int exit_node;      // random exit
     int segment;        // -1 while waiting to enter
     bool ready;      // false at start
 public:
-    Car(int, int);      // seg, nsegs
-    ~Car();
+    Vehicle(int, int);      // seg, nsegs
+    ~Vehicle();
 
     int get_exitnode();
     void set_segment(int);
@@ -22,13 +22,13 @@ public:
 
 class Toll {
 private:
-    vector<Car*> waiting_cars;      // 30 cars waiting in every toll
+    vector<Vehicle*> waiting_vehicles;      // 30 vehicles waiting in every toll
 public:
     Toll(int, int);
     ~Toll();
 
-    void add_cars(int, int);        // (int seg, int nsegs) / refill waiting cars vector
-    Car* remove_car();
+    void add_vehicles(int, int);        // (int seg, int nsegs) / refill waiting vehicles vector
+    Vehicle* remove_vehicle();
 };
 
 class Entrance {
@@ -41,14 +41,14 @@ public:
     Entrance(int, int, int);
     ~Entrance();
 
-    vector<Car*> operate(int);      // int requested_cars -> cars from tolls to segment
+    vector<Vehicle*> operate(int);      // int requested_vehicles -> vehicles from tolls to segment
 };
 
 class Segment {
 private:
     int cur_seg;
     Entrance entrance;
-    vector<Car*> segment_cars;
+    vector<Vehicle*> segment_vehicles;
     int capacity;
     Segment *next_segment;
     Segment *prev_segment;
@@ -56,17 +56,17 @@ public:
     Segment(int, int, int, int);
     ~Segment();
     
-    bool enter(Car&);   // return true/false if a car moved to new seg or not
-    void exit();    // deleting cars from the vector segment_cars
-    vector<Car*> pass();    // returning a vector with cars that changes segment
+    void enter();   // enter vehicles from prev segment and this entry
+    void exit();    // deleting vehicles from the vector segment_vehicles
+    vector<Vehicle*> pass();    // returning a vector with vehicles that changes segment
     int get_no_of_vehicles();   
-    void operate(); 
+    void operate();     
 };
 
 class Attiki_odos {
 private:
     int nsegs;
-    int all_cars;
+    int all_vehicles;
     Segment** segments;
 public:
     Attiki_odos(int, int, int);

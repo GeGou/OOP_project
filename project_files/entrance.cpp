@@ -27,38 +27,49 @@ Entrance::~Entrance() {
     // this->e_tolls.clear();
 }
 
-vector<Car*> Entrance::operate(int req_cars) {
-    // first step -> remove cars from entrance /return them to segment
-    vector<Car*> removed_cars;
+vector<Vehicle*> Entrance::operate(int req_vehicles) {
+    // first step -> remove vehicles from entrance /return them to segment
+    vector<Vehicle*> removed_vehicles;      // returned vector
 
-    // 8ELEI DOULEIA AYTH H FASH ME TO POSA OXHMATA 8A MPAINOYN STO SEGMENT
-    while ( removed_cars.size() < req_cars) {
-        vector<Toll*>::iterator i;
+    while (removed_vehicles.size() < req_vehicles) {
+        // tolls with employee
+        vector<Toll*>::iterator a;
         int y = 0;
-        for (i = tolls.begin(); i != tolls.end(); i++, y++) {
-            if (removed_cars.size() < req_cars) {
-                removed_cars.push_back(this->tolls[y]->remove_car());
+        int count = 0;
+        for (a = tolls.begin(); a != tolls.end(); a++, y++) {
+            if ((removed_vehicles.size() < req_vehicles) && (count < this->k)) {
+                removed_vehicles.push_back(this->tolls[y]->remove_vehicle());
+                count++;
+            }
+        }
+        // e-tolls
+        vector<Toll*>::iterator b;
+        y = 0;
+        count = 0;
+        for (b = e_tolls.begin(); b != e_tolls.end(); b++, y++) {
+            if ((removed_vehicles.size() < req_vehicles) && (count < 2*this->k)) {
+                removed_vehicles.push_back(this->e_tolls[y]->remove_vehicle());
             }
         }
     }
     // updating k for the next round
-    if (this->k*3 < req_cars) {
+    if (req_vehicles < this->k*3) {
         this->k--;
     }
-    else {
+    else if (req_vehicles == this->k*3) {
         this->k++;
     }
 
-    // second step -> refill the waiting cars in tolls
+    // second step -> refill the waiting vehicles in tolls
     vector<Toll*>::iterator a;
     int y = 0;
     for (a = tolls.begin(); a != tolls.end(); a++, y++) {
-        tolls[y]->add_cars(this->cur_seg, this->nsegs);
+        tolls[y]->add_vehicles(this->cur_seg, this->nsegs);
     }
     vector<Toll*>::iterator b;
-    int y = 0;
+    y = 0;
     for (b = e_tolls.begin(); b != e_tolls.end(); b++, y++) {
-        e_tolls[y]->add_cars(this->cur_seg, this->nsegs);
+        e_tolls[y]->add_vehicles(this->cur_seg, this->nsegs);
     }
-    return removed_cars;
+    return removed_vehicles;
 }

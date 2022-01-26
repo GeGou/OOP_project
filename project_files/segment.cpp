@@ -6,9 +6,9 @@ using namespace std;
 ////////////////////////////////////////////
 Segment::Segment(int nsegs, int cur_seg, int k, int percent) : entrance(nsegs, cur_seg, k) {
     // cout << "Segment construction." << endl;
-    cout << "Segment_" << cur_seg << " - Give capacity in cars: ";
+    cout << "Segment_" << cur_seg << " - Give capacity in vehicles: ";
     cin >> this->capacity;      // user gives the capacity
-    cout << "------------------------------------" << endl; 
+    cout << "--------------------------------------" << endl; 
     this->cur_seg = cur_seg;
     if (cur_seg == 0) {
         this->prev_segment = NULL;
@@ -16,9 +16,10 @@ Segment::Segment(int nsegs, int cur_seg, int k, int percent) : entrance(nsegs, c
     else if (cur_seg == nsegs - 1) {
         this->next_segment = NULL;
     }
-    int temp = rand() % 30 + 10;     // starting cars are 10-40
+    int temp = rand() % 30 + 10;     // starting vehicles are 10-40
     for (int i = 0 ; i < temp ; i++) {
-        this->segment_cars.push_back(new Car(cur_seg, nsegs));
+        this->segment_vehicles.push_back(new Vehicle(cur_seg, nsegs));
+        this->segment_vehicles[i]->set_segment(this->cur_seg);
     }
 }
 
@@ -27,62 +28,106 @@ Segment::~Segment() {
 
 }
 
-bool Segment::enter(Car& car) {
-    if (this->prev_segment == NULL) {
-        // ENTOLES
+void Segment::enter() {
+    bool flag = false;
+    // first enter vehicles from prev segment
+    if (this->prev_segment != NULL) {
+        vector<Vehicle*> pass_vehicles = this->prev_segment->pass();
+        // add new vector to the old one
+        for (int i = 0 ; i < pass_vehicles.size() ; i++) {
+            if (this->capacity == this->segment_vehicles.size()) {
+                break;
+            }
+            else {
+                this->segment_vehicles.push_back(pass_vehicles[i]);
+            }
+        }
+    }    
+
+    // after enter vehicles from the entry
+    if (this->segment_vehicles.size() < this->capacity) {
+        int temp = this->capacity - this->segment_vehicles.size();
+        vector<Vehicle*> entrance_vehicles = this->entrance.operate(temp);
+        if (entrance_vehicles.size() < temp) {
+            cout << "Delays at the node entrance: " << this->cur_seg << endl;
+            flag = true;
+        }
+        // add new vector to the old one
+        for (int i = 0 ; i < entrance_vehicles.size() ; i++) {
+            if (this->capacity == this->segment_vehicles.size()) {
+                break;
+            }
+            else {
+                this->segment_vehicles.push_back(entrance_vehicles[i]);
+            }
+        }
     }
-    // this->entrance.operate();   // epiostrefei synolo oxhmatwn
-    if (get_no_of_vehicles() < this->capacity) {
-        this->segment_cars.push_back(&car);
-        return true;
+    if (flag == false) {
+        cout << "Keep safety distances at the segment after the node: " << this->cur_seg << endl;
     }
-    return false;
 }
 
 void Segment::exit() {
-
-    vector<Car*>::iterator i;
+    if (this->next_segment == NULL) {
+        cout << "Exit for all vehicles, end of road." << endl;
+    }
+    vector<Vehicle*>::iterator i;
     int y = 0;
-    for (i = segment_cars.begin(); i != segment_cars.end(); i++, y++) {
-        this->segment_cars;
+    for (i = segment_vehicles.begin(); i != segment_vehicles.end(); i++, y++) {
         if (this->next_segment == NULL) {
-            cout << "Erase all cars, road is finished" << endl;
-            segment_cars.erase(i);
+            segment_vehicles.erase(i);
         }
-        else if (segment_cars[y]->get_exitnode() == this->cur_seg) {
-            segment_cars.erase(i);
-            cout << "Erase car" << endl;
-        }
-     }
-    // this->entrance.operate();
-}
-
-vector<Car*> Segment::pass() {
-    // passing cars in the next segment
-    vector<Car*> passing_cars;
-    vector<Car*>::iterator i;
-    int y = 0;
-    for (i = segment_cars.begin(); i != segment_cars.end(); i++, y++) {
-        if (segment_cars[y]->get_exitnode() > this->cur_seg) {
-            passing_cars.push_back(segment_cars[y]);
-            segment_cars.erase(i);
+        else if ((segment_vehicles[y]->get_exitnode() == this->cur_seg) 
+        && (segment_vehicles[y]->is_ready() == true)) {
+            cout << "Vehicle exits" << endl;
+            segment_vehicles.erase(i);
         }
     }
-    return passing_cars;
+}
+
+vector<Vehicle*> Segment::pass() {
+    // passing vehicles in the next segment
+    vector<Vehicle*> passing_vehicles;
+    vector<Vehicle*>::iterator i;
+    int y = 0;
+    // empty space for vehicles in the next segment
+    int temp = this->next_segment->capacity - this->next_segment->segment_vehicles.size();
+    for (i = segment_vehicles.begin(); i != segment_vehicles.end(); i++, y++) {
+        if (y == temp) {
+            cout << "Delays after the node: " << this->prev_segment->cur_seg << endl;
+            break;
+        }
+        if (segment_vehicles[y]->is_ready() == true) {
+            passing_vehicles.push_back(segment_vehicles[y]);
+            segment_vehicles.erase(i);
+        }
+    }
+    return passing_vehicles;
 }
 
 int Segment::get_no_of_vehicles() {
-    return this->segment_cars.size();
+    return this->segment_vehicles.size();
 }
 
 void Segment::operate() {
-    int cars = get_no_of_vehicles() / 2;    // f.e. 50/2 -> 25
-    int temp = rand() % cars;       // f.e. if cars=25 -> 0-24  will be ready
-    
-    this->exit();
+    //  -> vehicles exit
+    if (this->prev_segment != NULL) {   // first node haven't exit
+        this->exit();
+    }
 
-    //
-    cout << "Delays at the node entrance : " << this->cur_seg << endl;
-    cout << "Delays after the node : " << this->cur_seg << endl;
-    cout << "Keep safety distances at the segment after the node : " << this->cur_seg << endl;
+    // pass() of x-1 segment is called by the enter of segment x
+
+    // enter vehicles
+    this->enter();
+    
+    // select random vehicles to be ready    
+    int temp = get_no_of_vehicles() / 3;    // 1/3 of the vehicles will be ready for exit
+    int y = 0;
+    vector<Vehicle*>::iterator i;
+    for (i = segment_vehicles.begin(); i != segment_vehicles.end(); i++, y++) {
+        segment_vehicles[y]->set_ready();
+        if (y == temp) {
+            break;
+        }
+    }
 }
