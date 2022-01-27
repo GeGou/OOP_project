@@ -10,6 +10,7 @@ Segment::Segment(int nsegs, int cur_seg, int k, int percent) : entrance(nsegs, c
     cin >> this->capacity;      // user gives the capacity
     cout << "--------------------------------------" << endl; 
     this->cur_seg = cur_seg;
+    this->percent = percent;
     if (cur_seg == 0) {
         this->prev_segment = NULL;
     }
@@ -121,7 +122,7 @@ void Segment::operate() {
     this->enter();
     
     // select random vehicles to be ready    
-    int temp = get_no_of_vehicles() / 3;    // 1/3 of the vehicles will be ready for exit
+    int temp = get_no_of_vehicles() * this-> percent/100;    // amount of cars to be ready
     int y = 0;
     vector<Vehicle*>::iterator i;
     for (i = segment_vehicles.begin(); i != segment_vehicles.end(); i++, y++) {

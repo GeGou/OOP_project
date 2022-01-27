@@ -47,6 +47,7 @@ public:
 class Segment {
 private:
     int cur_seg;
+    int percent;
     Entrance entrance;
     vector<Vehicle*> segment_vehicles;
     int capacity;

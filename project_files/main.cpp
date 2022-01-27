@@ -8,7 +8,7 @@ int main (int argc, char* argv[]) {
         int nsegs = atoi(argv[2]);       // number of road's sections
         int k = atoi(argv[3]);       // maximum amount of inserted vehicles
         int percent = atoi(argv[4]);        // vehicles percent
-        if ((n == 0) || (nsegs == 0) || (k == 0) || (percent == 0)) {
+        if ((n <= 0) || (nsegs <= 0) || (k <= 0) || (percent <= 0)) {
             cout << "Arguments take values greater than 0." << endl;
             return 0;
         }
