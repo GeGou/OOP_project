@@ -2,7 +2,7 @@
 
 Εντολες για compile και εκτελεση:
 g++ -o myprog main.cpp attiki_odos.cpp entrance.cpp segment.cpp toll.cpp vehicle.cpp
-./myprog 10 10 10 10    // N, Nsegs, K, Percent
+./myprog 10 3 10 10    // N, Nsegs, K, Percent
 
 Εντολη για ελεχνο απο leaks και errors:
 valgrind --leak-check=full \

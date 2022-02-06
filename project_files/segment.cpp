@@ -4,10 +4,15 @@
 using namespace std;
 
 ////////////////////////////////////////////
-Segment::Segment(int nsegs, int cur_seg, int k, int percent) : entrance(nsegs, cur_seg, k) {
+Segment::Segment(int cur_seg, int k, int percent) : entrance(cur_seg, k) {
     // cout << "Segment construction." << endl;
-    cout << "Segment_" << cur_seg << " - Give capacity in vehicles: ";
-    cin >> this->capacity;      // user gives the capacity
+    do {
+        cout << "Segment_" << cur_seg << " - Give capacity in vehicles: ";
+        cin >> this->capacity;      // user gives the capacity
+        if (this->capacity <= 0) {
+            cout << "Capacity should be more than 0." << endl;
+        }
+    } while (this->capacity <= 0);
     cout << "--------------------------------------" << endl; 
     this->cur_seg = cur_seg;
     this->percent = percent;
@@ -17,11 +22,13 @@ Segment::Segment(int nsegs, int cur_seg, int k, int percent) : entrance(nsegs, c
     else if (cur_seg == nsegs - 1) {
         this->next_segment = NULL;
     }
-    int temp = rand() % 30 + 10;     // starting vehicles are 10-40
+    int temp = rand() % this->capacity + 1;     // starting vehicles are 0-capacity
+    cout << "Starting vehicles: " << temp << endl;
     for (int i = 0 ; i < temp ; i++) {
-        this->segment_vehicles.push_back(new Vehicle(cur_seg, nsegs));
+        this->segment_vehicles.push_back(new Vehicle(cur_seg));
         this->segment_vehicles[i]->set_segment(this->cur_seg);
     }
+    cout << "HERE" << endl;
 }
 
 Segment::~Segment() {

@@ -4,6 +4,7 @@ using namespace std;
 
 /////////////////////////////////
 static int round = 0;
+extern int nsegs;
 
 class Vehicle {
 private:
@@ -11,37 +12,44 @@ private:
     int segment;        // -1 while waiting to enter
     bool ready;      // false at start
 public:
-    Vehicle(int, int);      // seg, nsegs
+    Vehicle(int);      // seg, nsegs
     ~Vehicle();
 
-    int get_exitnode();
+    int get_exitnode() const;
     void set_segment(int);
     void set_ready();
-    bool is_ready();
+    bool is_ready() const;
+    void print() const;
 };
 
 class Toll {
 private:
-    vector<Vehicle*> waiting_vehicles;      // 30 vehicles waiting in every toll
+    int cur_seg;
+    int waiting_v;      // random with range 5-15
+    vector<Vehicle*> waiting_vehicles;      // 10 vehicles waiting in each toll
 public:
-    Toll(int, int);
+    Toll(int);
     ~Toll();
 
-    void add_vehicles(int, int);        // (int seg, int nsegs) / refill waiting vehicles vector
-    Vehicle* remove_vehicle();
+    void add_vehicles();        // refill waiting vehicles vector
+    Vehicle& remove_vehicle();      // remove and return a vehicle from toll to segment
 };
 
 class Entrance {
 private:
-    int nsegs, cur_seg, k;
+    int cur_seg;
+    int k;
     string id;      // node name-id -> f.e Node_0 / Node_1
     vector<Toll*> tolls;      // 3 tolls with employees
-    vector<Toll*> e_tolls;    // 5 electronic tolls
+    vector<Toll*> e_tolls;    // 2 electronic tolls
 public:
-    Entrance(int, int, int);
+    Entrance(int, int);     // cur_seg, k
     ~Entrance();
-
-    vector<Vehicle*> operate(int);      // int requested_vehicles -> vehicles from tolls to segment
+    
+    // segment::operate calls entrance::operate and requests x vehicles
+    // witch returned in a vector from vehicles. This function maybe
+    // returns less than requested vehicles because of the 3*k (maximum vehicles)
+    vector<Vehicle*> operate(int);      // int requested_vehicles -> return vector with vehicles from tolls
 };
 
 class Segment {
@@ -54,7 +62,7 @@ private:
     Segment *next_segment;
     Segment *prev_segment;
 public:
-    Segment(int, int, int, int);
+    Segment(int, int, int);
     ~Segment();
     
     void enter();   // enter vehicles from prev segment and this entry
@@ -66,11 +74,10 @@ public:
 
 class Attiki_odos {
 private:
-    int nsegs;
     int all_vehicles;
     Segment** segments;
 public:
-    Attiki_odos(int, int, int);
+    Attiki_odos(int, int);
     ~Attiki_odos();
     void operate();
 };

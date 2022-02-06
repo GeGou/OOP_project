@@ -3,11 +3,16 @@
 using namespace std;
 
 ////////////////////////////////////////////
-Toll::Toll(int nsegs, int cur_seg) {
+Toll::Toll(int cur_seg) {
     // cout << "Toll construction." << endl; 
-    for (int i = 0; i < 30 ; i++) {
-        this->waiting_vehicles.push_back(new Vehicle(nsegs, cur_seg));
+    this->cur_seg = cur_seg;
+    this->waiting_v = rand() % 10 + 5;  // waitng vehicles 5-15
+    for (int i = 0; i < this->waiting_v; i++) {
+        // cout << nsegs << "  " << cur_seg << endl;
+        this->waiting_vehicles.push_back(new Vehicle(this->cur_seg));
+        // this->waiting_vehicles.
     }
+    // cout << "OTHER TOLL\n" <<endl;
 }
 
 Toll::~Toll() {
@@ -16,17 +21,20 @@ Toll::~Toll() {
 
 }
 
-void Toll::add_vehicles(int nsegs, int cur_seg) {
-    if (this->waiting_vehicles.size() < 30) {
-        for (int i = 0; i < (30-this->waiting_vehicles.size()) ; i++) {
-            this->waiting_vehicles.push_back(new Vehicle(nsegs, cur_seg));
+void Toll::add_vehicles() {
+    int temp = this->waiting_vehicles.size();
+    cout << "waiting vehicle: " << temp << endl;
+    if (temp < this->waiting_v) {
+        for (int i = 0; i < (this->waiting_v-temp) ; i++) {
+            this->waiting_vehicles.push_back(new Vehicle(this->cur_seg));
         }   
     }
 }
 
-Vehicle* Toll::remove_vehicle() {
-    // maybe is a wrong way to temporary store a vehicle object
-    Vehicle* temp = this->waiting_vehicles[1];
+// temporary stores refence to the first vehicle, delete it from the vector 
+// and then return the vehicle's reference 
+Vehicle& Toll::remove_vehicle() {
+    Vehicle& temp = *this->waiting_vehicles[1];
     this->waiting_vehicles.erase(this->waiting_vehicles.begin());
     return temp;
 }

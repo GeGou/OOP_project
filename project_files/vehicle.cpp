@@ -3,10 +3,9 @@
 using namespace std;
 
 ////////////////////////////////////////////
-Vehicle::Vehicle(int nsegs, int cur_seg) {
+Vehicle::Vehicle(int cur_seg) {
     // cout << "Vehicle construction." << endl;
-    this->exit_node = rand() % (nsegs - cur_seg) + (cur_seg + 1);       // rand() % 30 + 1985; -> v3 range 1985-2014
-    // cout << "exit node: " << exit_node << endl;
+    this->exit_node = rand() % (nsegs - cur_seg) + (cur_seg + 1);
     this->segment = -1;
     this->ready = false;
 }
@@ -15,7 +14,7 @@ Vehicle::~Vehicle() {
     cout << "Vehicle destruction." << endl;
 }
 
-int Vehicle::get_exitnode() {
+int Vehicle::get_exitnode() const {
     return this->exit_node;
 }
 
@@ -27,6 +26,12 @@ void Vehicle::set_ready() {
     this->ready = true;
 }
 
-bool Vehicle::is_ready() {
+bool Vehicle::is_ready() const {
     return this->ready;
+}
+
+void Vehicle::print() const {
+    cout << "Vehicles info -> Exit node: " << this->exit_node
+        << " /Starting segment: " << this->segment
+        << " /Ready: " << this->ready << endl;
 }
