@@ -33,6 +33,7 @@ public:
 
     void add_vehicles();        // refill waiting vehicles vector
     Vehicle& remove_vehicle();      // remove and return a vehicle from toll to segment
+    void print();
 };
 
 class Entrance {
@@ -50,6 +51,7 @@ public:
     // witch returned in a vector from vehicles. This function maybe
     // returns less than requested vehicles because of the 3*k (maximum vehicles)
     vector<Vehicle*> operate(int);      // int requested_vehicles -> return vector with vehicles from tolls
+    void print();
 };
 
 class Segment {
@@ -70,6 +72,7 @@ public:
     vector<Vehicle*> pass();    // returning a vector with vehicles that changes segment
     int get_no_of_vehicles();   
     void operate();     
+    void print();
 };
 
 class Attiki_odos {

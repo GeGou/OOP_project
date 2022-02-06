@@ -31,7 +31,7 @@ bool Vehicle::is_ready() const {
 }
 
 void Vehicle::print() const {
-    cout << "Vehicles info -> Exit node: " << this->exit_node
-        << " /Starting segment: " << this->segment
-        << " /Ready: " << this->ready << endl;
+    cout << "Vehicle info -> Starting segment: " << this->segment
+        << " / Exit node: " << this->exit_node
+        << " / Ready: " << this->ready << endl;
 }

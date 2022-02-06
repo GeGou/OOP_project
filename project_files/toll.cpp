@@ -6,13 +6,10 @@ using namespace std;
 Toll::Toll(int cur_seg) {
     // cout << "Toll construction." << endl; 
     this->cur_seg = cur_seg;
-    this->waiting_v = rand() % 10 + 5;  // waitng vehicles 5-15
+    this->waiting_v = rand() % 10 + 5;  // waiting vehicles 5-15
     for (int i = 0; i < this->waiting_v; i++) {
-        // cout << nsegs << "  " << cur_seg << endl;
         this->waiting_vehicles.push_back(new Vehicle(this->cur_seg));
-        // this->waiting_vehicles.
     }
-    // cout << "OTHER TOLL\n" <<endl;
 }
 
 Toll::~Toll() {
@@ -37,4 +34,12 @@ Vehicle& Toll::remove_vehicle() {
     Vehicle& temp = *this->waiting_vehicles[1];
     this->waiting_vehicles.erase(this->waiting_vehicles.begin());
     return temp;
+}
+
+void Toll::print() {
+    vector<Vehicle*>::iterator i;
+    int y = 0;
+    for (i = waiting_vehicles.begin(); i != waiting_vehicles.end(); i++, y++) {
+        this->waiting_vehicles[y]->print();
+    }
 }

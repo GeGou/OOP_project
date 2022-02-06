@@ -6,6 +6,7 @@ using namespace std;
 ////////////////////////////////////////////
 Segment::Segment(int cur_seg, int k, int percent) : entrance(cur_seg, k) {
     // cout << "Segment construction." << endl;
+    cout << "--------------------------------------" << endl; 
     do {
         cout << "Segment_" << cur_seg << " - Give capacity in vehicles: ";
         cin >> this->capacity;      // user gives the capacity
@@ -13,7 +14,7 @@ Segment::Segment(int cur_seg, int k, int percent) : entrance(cur_seg, k) {
             cout << "Capacity should be more than 0." << endl;
         }
     } while (this->capacity <= 0);
-    cout << "--------------------------------------" << endl; 
+    // cout << "--------------------------------------" << endl; 
     this->cur_seg = cur_seg;
     this->percent = percent;
     if (cur_seg == 0) {
@@ -22,13 +23,13 @@ Segment::Segment(int cur_seg, int k, int percent) : entrance(cur_seg, k) {
     else if (cur_seg == nsegs - 1) {
         this->next_segment = NULL;
     }
-    int temp = rand() % this->capacity + 1;     // starting vehicles are 0-capacity
-    cout << "Starting vehicles: " << temp << endl;
+    cout << "\t---> Segment's starting vehicles. <----" << endl;
+    int temp = rand() % this->capacity + 1;     // starting vehicles are 1-capacity
     for (int i = 0 ; i < temp ; i++) {
         this->segment_vehicles.push_back(new Vehicle(cur_seg));
         this->segment_vehicles[i]->set_segment(this->cur_seg);
+        this->segment_vehicles[i]->print();
     }
-    cout << "HERE" << endl;
 }
 
 Segment::~Segment() {
@@ -137,5 +138,14 @@ void Segment::operate() {
         if (y == temp) {
             break;
         }
+    }
+}
+
+void Segment::print() {
+    cout << "\t---> Segment's vehicles. <---" << endl;
+    vector<Vehicle*>::iterator a;
+    int y = 0;
+    for (a = this->segment_vehicles.begin(); a != this->segment_vehicles.end(); a++, y++) {
+        this->segment_vehicles[y]->print();
     }
 }

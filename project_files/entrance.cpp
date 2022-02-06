@@ -55,8 +55,6 @@ vector<Vehicle*> Entrance::operate(int req_vehicles) {
             }
         }
     }
-    // cout << "REQUESTED INT: " << req_vehicles << endl;
-    cout << "REQUESTED VEHICLES SIZE VECTOR: " << removed_vehicles.size() << endl;
     // updating k for the next round
     if (req_vehicles < this->k*3) {
         this->k--;
@@ -69,11 +67,23 @@ vector<Vehicle*> Entrance::operate(int req_vehicles) {
     vector<Toll*>::iterator a, b;
     int y = 0;
     for (a = tolls.begin(); a != tolls.end(); a++, y++) {
-        tolls[y]->add_vehicles();
+        this->tolls[y]->add_vehicles();
     }
     y = 0;
     for (b = e_tolls.begin(); b != e_tolls.end(); b++, y++) {
-        e_tolls[y]->add_vehicles();
+        this->e_tolls[y]->add_vehicles();
     }
     return removed_vehicles;
+}
+
+void Entrance::print() {
+    vector<Toll*>::iterator a, b;
+    int y = 0;
+    for (a = tolls.begin(); a != tolls.end(); a++, y++) {
+        this->tolls[y]->print();
+    }
+    y = 0;
+    for (b = e_tolls.begin(); b != e_tolls.end(); b++, y++) {
+        this->e_tolls[y]->print();
+    }
 }
