@@ -26,54 +26,45 @@ Entrance::~Entrance() {
     // this->e_tolls.clear();
 }
 
-vector<Vehicle*> Entrance::operate(int req_vehicles) {
-    // first step -> remove vehicles from tolls and return them to segment
-    vector<Vehicle*> removed_vehicles;      // returned vector
-
-    while (removed_vehicles.size() < req_vehicles) {
-        // tolls with employee
-        vector<Toll*>::iterator a, b;
-        int y = 0, count = 0;
-        for (a = tolls.begin(); a != tolls.end(); a++, y++) {
-            if ((removed_vehicles.size() < req_vehicles) && (count < this->k)) {
-                removed_vehicles.push_back(&this->tolls[y]->remove_vehicle());
-                count++;
-            }
-            else {
-                break;
-            }
+void Entrance::operate(vector<Vehicle*>& seg_vehicles, int space) {
+    // first step
+    int temp = space;   // maximum vehicles to enter from tolls to segment
+    if (this->k*3 < space) {
+        temp = this->k*3;
+    }  
+    int temp0 = 0;
+    while ((temp > 0) && (temp0 < this->k)) {
+        // tolls with employee - passes one vehicle from each toll to the vector
+        int i = 0;
+        while (((i != this->tolls.size()) && (temp0 < this->k))) {
+            // prepei na elenxw kai to temp pou ginetai --
+            seg_vehicles.push_back(&this->tolls[i]->remove_vehicle());
+            i++; temp--; temp0++;
         }
-        // e-tolls
-        y = 0, count = 0;
-        for (b = e_tolls.begin(); b != e_tolls.end(); b++, y++) {
-            if ((removed_vehicles.size() < req_vehicles) && (count < 2*this->k)) {
-                removed_vehicles.push_back(&this->e_tolls[y]->remove_vehicle());
-                count++;    
-            }
-            else {
-                break;
-            }
+    }
+    temp0 = 0;
+    while ((temp > 0) && (temp0 < 2*this->k)) {
+        // e-tolls - passes one vehicle from each e-toll to the vector
+        int i = 0;
+        while ((i != this->e_tolls.size()) && (temp < 2*this->k)) {
+            seg_vehicles.push_back(&this->e_tolls[i]->remove_vehicle());
+            i++; temp--; temp0++;
         }
     }
     // updating k for the next round
-    if (req_vehicles < this->k*3) {
+    if (space < this->k*3) {
         this->k--;
     }
-    else {  // if (req_vehicles == this->k*3) {
+    else {  // if (space == this->k*3) {
         this->k++;
     }
-
     // second step -> refill the waiting vehicles in tolls
-    vector<Toll*>::iterator a, b;
-    int y = 0;
-    for (a = tolls.begin(); a != tolls.end(); a++, y++) {
-        this->tolls[y]->add_vehicles();
+    for (int i = 0; i != tolls.size(); i++) {
+        this->tolls[i]->add_vehicles();
     }
-    y = 0;
-    for (b = e_tolls.begin(); b != e_tolls.end(); b++, y++) {
-        this->e_tolls[y]->add_vehicles();
+    for (int i = 0 ; i != e_tolls.size(); i++) {
+        this->e_tolls[i]->add_vehicles();
     }
-    return removed_vehicles;
 }
 
 void Entrance::print() {

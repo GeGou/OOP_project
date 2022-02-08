@@ -14,6 +14,10 @@ int main (int argc, char* argv[]) {
             cout << "Arguments take values greater than 0." << endl;
             return 0;
         }
+        else if (percent > 100) {
+            cout << "Percent's(last argument) range : 0 - 100" << endl;
+            return 0;
+        }
         srand(time(NULL));      // the start of the generator
         // simulation starts here
         Attiki_odos attiki_odos(k, percent);
@@ -23,7 +27,7 @@ int main (int argc, char* argv[]) {
         cout << "--------------------" << endl;
     }
     else {
-        cout << "Wrong given arguments" << endl;
+        cout << "Wrong set of arguments" << endl;
     }
     return 0;
 }

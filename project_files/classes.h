@@ -47,10 +47,9 @@ public:
     Entrance(int, int);     // cur_seg, k
     ~Entrance();
     
-    // segment::operate calls entrance::operate and requests x vehicles
-    // witch returned in a vector from vehicles. This function maybe
-    // returns less than requested vehicles because of the 3*k (maximum vehicles)
-    vector<Vehicle*> operate(int);      // int requested_vehicles -> return vector with vehicles from tolls
+    // segment::operate calls entrance::operate to insert 3*k vehicles 
+    // from entrance's tolls to the segment's vector with vehicles
+    void operate(vector<Vehicle*>&, int);
     void print();
 };
 

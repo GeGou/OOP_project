@@ -31,7 +31,11 @@ void Toll::add_vehicles() {
 // temporary stores refence to the first vehicle, delete it from the vector 
 // and then return the vehicle's reference 
 Vehicle& Toll::remove_vehicle() {
-    Vehicle& temp = *this->waiting_vehicles[1];
+    // after a lot of calls maybe the toll have no other vehicles
+    if (waiting_vehicles.size() == 0) {
+        this->add_vehicles();
+    }
+    Vehicle& temp = *this->waiting_vehicles.front();
     this->waiting_vehicles.erase(this->waiting_vehicles.begin());
     return temp;
 }
