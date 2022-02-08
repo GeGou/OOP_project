@@ -20,7 +20,7 @@ Toll::~Toll() {
 
 void Toll::add_vehicles() {
     int temp = this->waiting_vehicles.size();
-    cout << "waiting vehicle: " << temp << endl;
+    // cout << ">> Waiting vehicles in toll: " << temp << endl;
     if (temp < this->waiting_v) {
         for (int i = 0; i < (this->waiting_v-temp) ; i++) {
             this->waiting_vehicles.push_back(new Vehicle(this->cur_seg));

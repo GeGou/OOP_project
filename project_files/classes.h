@@ -61,16 +61,19 @@ private:
     Entrance entrance;
     vector<Vehicle*> segment_vehicles;
     int capacity;
-    Segment *next_segment;
     Segment *prev_segment;
+    Segment *next_segment;
+    bool last_node;
 public:
     Segment(int, int, int);
     ~Segment();
-    
+
+    void set_prev_next(Segment*, Segment*);
     void enter();   // enter vehicles from prev segment and this entry
     void exit();    // deleting vehicles from the vector segment_vehicles
-    vector<Vehicle*> pass();    // returning a vector with vehicles that changes segment
-    int get_no_of_vehicles();   
+    // vector<Vehicle*> pass();    // returning a vector with vehicles that changes segment
+    void pass(vector<Vehicle*>&);   // adds vehicles from previous segment
+    int get_no_of_vehicles() const;   
     void operate();     
     void print();
 };
@@ -82,5 +85,6 @@ private:
 public:
     Attiki_odos(int, int);
     ~Attiki_odos();
+    
     void operate();
 };

@@ -77,6 +77,7 @@ vector<Vehicle*> Entrance::operate(int req_vehicles) {
 }
 
 void Entrance::print() {
+    cout << this->id << " :" << endl;
     vector<Toll*>::iterator a, b;
     int y = 0;
     for (a = tolls.begin(); a != tolls.end(); a++, y++) {
