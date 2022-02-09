@@ -11,7 +11,7 @@ Vehicle::Vehicle(int cur_seg) {
 }
 
 Vehicle::~Vehicle() {
-    cout << "Vehicle destruction." << endl;
+    // cout << "Vehicle destruction." << endl;
 }
 
 int Vehicle::get_exitnode() const {

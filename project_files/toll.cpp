@@ -3,26 +3,26 @@
 using namespace std;
 
 ////////////////////////////////////////////
-Toll::Toll(int cur_seg) {
+Toll::Toll(int cur_seg) : cur_seg(cur_seg) {
     // cout << "Toll construction." << endl; 
-    this->cur_seg = cur_seg;
     this->waiting_v = rand() % 10 + 5;  // waiting vehicles 5-15
-    for (int i = 0; i < this->waiting_v; i++) {
+    for (int i = 0 ; i < this->waiting_v ; i++) {
         this->waiting_vehicles.push_back(new Vehicle(this->cur_seg));
     }
 }
 
 Toll::~Toll() {
-    cout << "Toll destruction." << endl;
-    // this->vehicles.clear();
-
+    // cout << "Toll destruction." << endl;
+    for (int i = 0; i < this->waiting_vehicles.size(); i++) {
+        delete this->waiting_vehicles[i];
+    }
 }
 
 void Toll::add_vehicles() {
     int temp = this->waiting_vehicles.size();
     // cout << ">> Waiting vehicles in toll: " << temp << endl;
     if (temp < this->waiting_v) {
-        for (int i = 0; i < (this->waiting_v-temp) ; i++) {
+        for (int i = 0 ; i < (this->waiting_v-temp) ; i++) {
             this->waiting_vehicles.push_back(new Vehicle(this->cur_seg));
         }   
     }
@@ -41,9 +41,7 @@ Vehicle& Toll::remove_vehicle() {
 }
 
 void Toll::print() {
-    vector<Vehicle*>::iterator i;
-    int y = 0;
-    for (i = waiting_vehicles.begin(); i != waiting_vehicles.end(); i++, y++) {
-        this->waiting_vehicles[y]->print();
+    for (int i = 0 ; i < this->waiting_vehicles.size(); i++) {
+        this->waiting_vehicles[i]->print();
     }
 }

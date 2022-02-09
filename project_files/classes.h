@@ -3,8 +3,8 @@
 using namespace std;
 
 /////////////////////////////////
-static int round = 0;
-extern int nsegs;
+static int round = 1;
+extern int nsegs, k, percent;
 
 class Vehicle {
 private:
@@ -39,12 +39,11 @@ public:
 class Entrance {
 private:
     int cur_seg;
-    int k;
     string id;      // node name-id -> f.e Node_0 / Node_1
     vector<Toll*> tolls;      // 3 tolls with employees
     vector<Toll*> e_tolls;    // 2 electronic tolls
 public:
-    Entrance(int, int);     // cur_seg, k
+    Entrance(int);     // cur_seg
     ~Entrance();
     
     // segment::operate calls entrance::operate to insert 3*k vehicles 
@@ -64,7 +63,7 @@ private:
     Segment *next_segment;
     bool last_node;
 public:
-    Segment(int, int, int);
+    Segment(int);
     ~Segment();
 
     void set_prev_next(Segment*, Segment*);
@@ -82,7 +81,7 @@ private:
     int all_vehicles;
     Segment** segments;
 public:
-    Attiki_odos(int, int);
+    Attiki_odos();
     ~Attiki_odos();
     
     void operate();

@@ -4,15 +4,21 @@
 using namespace std;
 
 ////////////////////////////////////////////
-Attiki_odos::Attiki_odos(int k, int percent) {
+Attiki_odos::Attiki_odos() {
     cout << "Highway in operation" << endl;
+    this->segments = NULL;
     this->segments = new Segment*[nsegs];
-    int sum;
+    int sum = 0;
     for (int cur_seg = 0 ; cur_seg < nsegs ; cur_seg++) {
-        this->segments[cur_seg] = new Segment(cur_seg, k, percent);
+        this->segments[cur_seg] = NULL;
+    }
+    for (int cur_seg = 0 ; cur_seg < nsegs ; cur_seg++) {
+        this->segments[cur_seg] = new Segment(cur_seg);
         sum += this->segments[cur_seg]->get_no_of_vehicles();
     }
     this->all_vehicles = sum;
+    cout << "-------------------------------\n" << "Starting amount of vehicles: " 
+        << this->all_vehicles << endl;
     // setting the pointer to previous and next segment
     this->segments[0]->set_prev_next(NULL, this->segments[1]);
     this->segments[nsegs-1]->set_prev_next(this->segments[nsegs-2], NULL);
@@ -30,8 +36,8 @@ Attiki_odos::~Attiki_odos() {
 }
 
 void Attiki_odos::operate() {
-    cout << "----------------------" << endl << "-> Total vehicles in highway: " 
-        << this->all_vehicles << endl;
+    cout << "--------------------------------\n" << ">>>>> Simulation cycle : " 
+        << round++ << " <<<<<" << endl;
     int sum = 0;
     for (int i = nsegs-1 ; i >= 0 ; i--) {        
         this->segments[i]->operate();       // changes the amount of segment's vehicles
@@ -40,5 +46,6 @@ void Attiki_odos::operate() {
             << this->segments[i]->get_no_of_vehicles() << endl;
     }
     this->all_vehicles = sum;
-    cout << "-> Round: " << ++round << " / Vehicles: " << sum << endl;
+    // cout << "-> Round: " << round++ << " / Vehicles: " << sum0 << endl;
+    cout << "-> Total vehicles in highway: " << this->all_vehicles << endl;
 }
