@@ -27,7 +27,7 @@ Segment::Segment(int cur_seg) : entrance(cur_seg) {
 }
 
 Segment::~Segment() {
-    cout << "Segment destruction." << endl;
+    // cout << "Segment destruction." << endl;
     for (int i = 0 ; i < this->segment_vehicles.size() ; i++) {
         delete this->segment_vehicles[i];
     }

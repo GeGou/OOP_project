@@ -6,12 +6,8 @@ using namespace std;
 ////////////////////////////////////////////
 Attiki_odos::Attiki_odos() {
     cout << "Highway in operation" << endl;
-    this->segments = NULL;
     this->segments = new Segment*[nsegs];
     int sum = 0;
-    for (int cur_seg = 0 ; cur_seg < nsegs ; cur_seg++) {
-        this->segments[cur_seg] = NULL;
-    }
     for (int cur_seg = 0 ; cur_seg < nsegs ; cur_seg++) {
         this->segments[cur_seg] = new Segment(cur_seg);
         sum += this->segments[cur_seg]->get_no_of_vehicles();
