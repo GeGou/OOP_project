@@ -22,8 +22,8 @@ void Vehicle::set_segment(int seg) {
     this->segment = seg;
 }
 
-void Vehicle::set_ready() {
-    this->ready = true;
+void Vehicle::set_ready(bool condition) {
+    this->ready = condition;
 }
 
 bool Vehicle::is_ready() const {
@@ -31,7 +31,7 @@ bool Vehicle::is_ready() const {
 }
 
 void Vehicle::print() const {
-    cout << "Vehicle's info -> Starting segment: " << this->segment
+    cout << "Vehicle's info -> Entry node: " << this->segment
         << " / Exit node: " << this->exit_node
-        << " / Ready: " << this->ready << endl;
+        << " / Ready: " << boolalpha << this->ready << endl;
 }

@@ -18,9 +18,9 @@ Toll::~Toll() {
     }
 }
 
+// constructs new vehicles and refill the waiting_vehicles
 void Toll::add_vehicles() {
     int temp = this->waiting_vehicles.size();
-    // cout << ">> Waiting vehicles in toll: " << temp << endl;
     if (temp < this->waiting_v) {
         for (int i = 0 ; i < (this->waiting_v-temp) ; i++) {
             this->waiting_vehicles.push_back(new Vehicle(this->cur_seg));
@@ -28,8 +28,8 @@ void Toll::add_vehicles() {
     }
 }
 
-// temporary stores refence to the first vehicle, delete it from the vector 
-// and then return the vehicle's reference 
+// temporary stores refence to the first vehicle, delete it from 
+// the vector and then return the vehicle's reference 
 Vehicle& Toll::remove_vehicle() {
     // after a lot of calls maybe the toll have no other vehicles
     if (waiting_vehicles.size() == 0) {
@@ -40,6 +40,7 @@ Vehicle& Toll::remove_vehicle() {
     return temp;
 }
 
+// prints info for waiting vehicles from each toll
 void Toll::print() {
     for (int i = 0 ; i < this->waiting_vehicles.size(); i++) {
         this->waiting_vehicles[i]->print();

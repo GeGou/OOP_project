@@ -42,6 +42,5 @@ void Attiki_odos::operate() {
             << this->segments[i]->get_no_of_vehicles() << endl;
     }
     this->all_vehicles = sum;
-    // cout << "-> Round: " << round++ << " / Vehicles: " << sum0 << endl;
     cout << "-> Total vehicles in highway: " << this->all_vehicles << endl;
 }

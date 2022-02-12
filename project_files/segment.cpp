@@ -33,18 +33,21 @@ Segment::~Segment() {
     }
 }
 
+// setting pointer to previous and next segment of each segment
 void Segment::set_prev_next(Segment* a, Segment* b) {
     this->prev_segment = a;
     this->next_segment = b;
 }
 
+// after some vehicles have left the segment ,it is time to enter new vehicles
+// first from previous segment and then ,if segment is't full, from entrance
 void Segment::enter() {
     bool flag = false;
     // first enter vehicles from previous segment
     if (this->prev_segment != NULL) {
         this->prev_segment->pass(this->segment_vehicles);
     }    
-    // after enter vehicles from the entry
+    // after enter vehicles from the entrance
     if (this->segment_vehicles.size() < this->capacity) {
         int temp = this->capacity - this->segment_vehicles.size();
         this->entrance.operate(this->segment_vehicles, temp);
@@ -59,6 +62,7 @@ void Segment::enter() {
     }
 }
 
+// finding and remove vehicles with destinition node this node
 void Segment::exit() {
     if (this->next_segment == NULL) {
         cout << "> Final node, only exit." << endl;
@@ -78,6 +82,8 @@ void Segment::exit() {
     }
 }
 
+// called each time from the next segment to pass the ready vehicles
+// fron n-1 segment to n segment by adding vehicles to n vehicle's vector 
 void Segment::pass(vector<Vehicle*> &next_seg_vehicles) {
     // temp = space for vehicles in the next segment
     int temp = this->next_segment->capacity - next_seg_vehicles.size();
@@ -94,6 +100,7 @@ void Segment::pass(vector<Vehicle*> &next_seg_vehicles) {
         if ((this->segment_vehicles[y]->is_ready() == true) 
         && (this->segment_vehicles[y]->get_exitnode() > this->cur_seg+1)) {
             if (temp > 0) {     // space for vehicles in the next segment
+                this->segment_vehicles[y]->set_ready(false);
                 next_seg_vehicles.push_back(this->segment_vehicles[y]);
                 it = this->segment_vehicles.erase(it);
                 temp--;
@@ -120,14 +127,15 @@ void Segment::operate() {
     // last -> select some vehicles to be ready (vehicles randomly inserted the vector)    
     int temp = get_no_of_vehicles() * percent/100;    // amount of cars to be ready
     for (int i = 0 ; i < temp ; i++) {
-        this->segment_vehicles[i]->set_ready();
+        this->segment_vehicles[i]->set_ready(true);
     }
     // this->print();
 }
 
+// print all segment's vehicles info by uncomment the commande in operate
 void Segment::print() {
-    this->entrance.print();
-    cout << "~ Segment_" << this->cur_seg << " -> Capacity: "
+    // this->entrance.print();      // if we need to list the waiting vehicles in tolls
+    cout << "Segment: " << this->cur_seg << " -> Capacity: "
         << this->capacity << " / Vehicles:" << endl;
     for (int i = 0 ; i < this->segment_vehicles.size() ; i++) {
         this->segment_vehicles[i]->print();

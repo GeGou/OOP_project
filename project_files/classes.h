@@ -17,7 +17,7 @@ public:
 
     int get_exitnode() const;
     void set_segment(int);
-    void set_ready();
+    void set_ready(bool);
     bool is_ready() const;
     void print() const;
 };
@@ -46,22 +46,20 @@ public:
     Entrance(int);     // cur_seg
     ~Entrance();
     
-    // segment::operate calls entrance::operate to insert 3*k vehicles 
+    // segment::operate calls entrance::operate to insert vehicles 
     // from entrance's tolls to the segment's vector with vehicles
-    void operate(vector<Vehicle*>&, int);
+    void operate(vector<Vehicle*>&, int);   // int -> requested vehicles
     void print();
 };
 
 class Segment {
 private:
     int cur_seg;
-    int percent;
+    int capacity;
     Entrance entrance;
     vector<Vehicle*> segment_vehicles;
-    int capacity;
     Segment *prev_segment;
     Segment *next_segment;
-    bool last_node;
 public:
     Segment(int);
     ~Segment();

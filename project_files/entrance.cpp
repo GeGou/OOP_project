@@ -65,6 +65,7 @@ void Entrance::operate(vector<Vehicle*>& seg_vehicles, int space) {
     }
 }
 
+// prints info for waiting vehicles on tolls
 void Entrance::print() {
     cout << this->id << " :" << endl;
     for (int i = 0 ; i < this->tolls.size() ; i++) {
