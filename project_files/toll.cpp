@@ -5,7 +5,7 @@ using namespace std;
 ////////////////////////////////////////////
 Toll::Toll(int cur_seg) : cur_seg(cur_seg) {
     // cout << "Toll construction." << endl; 
-    this->waiting_v = rand() % 10 + 5;  // waiting vehicles 5-15
+    this->waiting_v = rand() % 10 + 5;      // waiting vehicles 5-15
     for (int i = 0 ; i < this->waiting_v ; i++) {
         this->waiting_vehicles.push_back(new Vehicle(this->cur_seg));
     }
@@ -16,6 +16,7 @@ Toll::~Toll() {
     for (int i = 0; i < this->waiting_vehicles.size(); i++) {
         delete this->waiting_vehicles[i];
     }
+    this->waiting_vehicles.clear();
 }
 
 // constructs new vehicles and refill the waiting_vehicles

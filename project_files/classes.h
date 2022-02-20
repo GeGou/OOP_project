@@ -12,7 +12,7 @@ private:
     int segment;        // -1 while waiting to enter
     bool ready;      // false at start
 public:
-    Vehicle(int);      // seg, nsegs
+    Vehicle(int);      // seg
     ~Vehicle();
 
     int get_exitnode() const;
@@ -26,7 +26,7 @@ class Toll {
 private:
     int cur_seg;
     int waiting_v;      // random with range 5-15
-    vector<Vehicle*> waiting_vehicles;      // 10 vehicles waiting in each toll
+    vector<Vehicle*> waiting_vehicles;      // 5-15 vehicles waiting in each toll
 public:
     Toll(int);
     ~Toll();
@@ -54,7 +54,7 @@ public:
 
 class Segment {
 private:
-    int cur_seg;
+    int cur_seg;    // current segment
     int capacity;
     Entrance entrance;
     vector<Vehicle*> segment_vehicles;
@@ -67,8 +67,7 @@ public:
     void set_prev_next(Segment*, Segment*);
     void enter();   // enter vehicles from prev segment and this entry
     void exit();    // deleting vehicles from the vector segment_vehicles
-    // vector<Vehicle*> pass();    // returning a vector with vehicles that changes segment
-    void pass(vector<Vehicle*>&);   // adds vehicles from previous segment
+    void pass(vector<Vehicle*>&);   // adding vehicles from previous segment
     int get_no_of_vehicles() const;   
     void operate();     
     void print();

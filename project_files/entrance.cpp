@@ -8,11 +8,11 @@ Entrance::Entrance(int cur_seg) : cur_seg(cur_seg) {
     // cout << "Entrance construction." << endl;
     string temp = "Node_";
     this->id = temp.append(to_string(cur_seg));      // making the node unique
-    // employee tolls
+    // 3 employee tolls
     for (int i = 0; i < 3; i++) {
         this->tolls.push_back(new Toll(cur_seg));
     }
-    // e-tolls
+    // 2 e-tolls
     for (int i = 0; i < 2; i++) {
         this->e_tolls.push_back(new Toll(cur_seg));
     }
@@ -29,7 +29,7 @@ Entrance::~Entrance() {
 }
 
 void Entrance::operate(vector<Vehicle*>& seg_vehicles, int space) {
-    // first step
+    // first step to find the amount of vehicles to be entered from tolls
     int temp = space;
     if (k*3 < space) {
         temp = k*3;
@@ -56,7 +56,7 @@ void Entrance::operate(vector<Vehicle*>& seg_vehicles, int space) {
     // updating k for the next round
     if (space < k*3) { k--; }
     else { k++; }
-    // second step -> refill the waiting vehicles in tolls
+    // at the end -> refill the waiting vehicles in tolls
     for (int i = 0; i != tolls.size(); i++) {
         this->tolls[i]->add_vehicles();
     }
